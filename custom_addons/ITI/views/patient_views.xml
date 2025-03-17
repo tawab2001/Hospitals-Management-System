@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_patient_form" model="ir.ui.view">
+        <field name="name">iti.patient.form</field>
+        <field name="model">iti.patient</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="first_name"/>
+                        <field name="last_name"/>
+                        <field name="birthdate"/>
+                        <field name="age" readonly="1"/>
+                        <field name="email"/>
+                        <field name="state"/>
+                        <field name="department_id"/>
+                        <field name="doctor_ids" domain="[('department_id', '=', department_id)]" readonly="department_id == False"/>
+                        <field name="pcr"/>
+                        <field name="cr_ratio" required="pcr == True"/>
+                        <field name="history" invisible="age &lt; 50"/>
+                        <field name="image" widget="image" class="oe_avatar" />
+                        <field name="address"/>
+                    </group>
+                     <notebook>
+                            <page string="Log History">
+                                <field name="log_history_ids">
+                                    <tree>
+                                        <field name="date" />
+                                        <field name="description" />
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_patient_tree" model="ir.ui.view">
+        <field name="name">iti.patient.tree</field>
+        <field name="model">iti.patient</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="first_name"/>
+                <field name="last_name"/>
+                <field name="age"/>
+                <field name="email"/>
+                <field name="state"/>
+                <field name="department_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_iti_patient_form" model="ir.actions.act_window">
+        <field name="name">Patients</field>
+        <field name="res_model">iti.patient</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_iti_patient" name="Patients" parent="menu_iti_root" sequence="4"/>
+    <menuitem id="menu_iti_patient_form" name="Patients" parent="menu_iti_patient" action="action_iti_patient_form" sequence="1"/>
+</odoo>
